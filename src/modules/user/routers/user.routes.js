@@ -17,8 +17,8 @@ router
   .route("/")
   .get(authenticate, authorize(ROLES.USER), getUser).put(authenticate,authorize(ROLES.USER),validate(updateUserSchema),updateUser)
 
-  router.route("/:id").put(authenticate,authorize(ROLES.USER),validate(updateUserByIdSchema),updateUserById).delete(authenticate,authorize(ROLES.USER),validate(deleteUserSchema),deleteUser)
+  router.route("/:id").put(authenticate,authorize(ROLES.ADMIN),validate(updateUserByIdSchema),updateUserById).delete(authenticate,authorize(ROLES.ADMIN),validate(deleteUserSchema),deleteUser)
 
-router.route("/all").get(authenticate, authorize(ROLES.USER), getAllUsers);
+router.route("/all").get(authenticate, authorize(ROLES.ADMIN), getAllUsers);
 
 export default router;

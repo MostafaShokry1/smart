@@ -21,7 +21,7 @@ router
   .get(authenticate, authorize(ROLES.USER), getchild)
   .post(
     authenticate,
-    authorize(ROLES.USER),
+    authorize(ROLES.ADMIN),
     upload.single("cover_image"),
     validate(addChildSchema),
     attachImage("cover_image"),
@@ -30,16 +30,16 @@ router
   );
   router.route("/:id").put(
     authenticate,
-    authorize(ROLES.USER),
+    authorize(ROLES.ADMIN),
     upload.single("cover_image"),
     validate(updateChildSchema),
     attachImage("cover_image"),
     updateChild
   )
-  .delete(authenticate, authorize(ROLES.USER),validate(deleteChildSchema), deleteChild)
+  .delete(authenticate, authorize(ROLES.ADMIN),validate(deleteChildSchema), deleteChild)
 
 router
   .route("/all")
-  .get(authenticate, authorize(ROLES.USER), getAllChildWithParent);
+  .get(authenticate, authorize(ROLES.ADMIN), getAllChildWithParent);
 
 export default router;
