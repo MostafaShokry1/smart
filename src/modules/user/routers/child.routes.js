@@ -1,0 +1,45 @@
+import { Router } from "express";
+import {  assertUniqueEmailchild, authenticate, authorize } from "../../auth/auth.middlewares.js";
+import { ROLES } from "../../../utils/enums.js";
+
+import { validate } from "../../../middlewares/validation.middleware.js";
+import {
+  addchild,
+  deleteChild,
+  getAllChildWithParent,
+  getchild,
+  updateChild,
+} from "../controllers/child.controller.js";
+import { upload } from "../../../middlewares/upload.middleware.js";
+import { attachImage } from "../../image/middlewares/image.middleware.js";
+import { addChildSchema, deleteChildSchema, updateChildSchema } from "../validations/child.validations.js";
+
+const router = Router();
+
+router
+  .route("/")
+  .get(authenticate, authorize(ROLES.USER), getchild)
+  .post(
+    authenticate,
+    authorize(ROLES.USER),
+    upload.single("cover_image"),
+    validate(addChildSchema),
+    attachImage("cover_image"),
+    assertUniqueEmailchild,
+    addchild
+  );
+  router.route("/:id").put(
+    authenticate,
+    authorize(ROLES.USER),
+    upload.single("cover_image"),
+    validate(updateChildSchema),
+    attachImage("cover_image"),
+    updateChild
+  )
+  .delete(authenticate, authorize(ROLES.USER),validate(deleteChildSchema), deleteChild)
+
+router
+  .route("/all")
+  .get(authenticate, authorize(ROLES.USER), getAllChildWithParent);
+
+export default router;
