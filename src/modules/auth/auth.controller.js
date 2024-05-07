@@ -10,8 +10,6 @@ export const signin = catchAsyncError(async (req, res) => {
   const user = await userModel.findOne({ email });
   if(!user.isEmailVerified)throw new AppError("please Verifiy Your Email first")
 
-  console.log(password);
-  console.log(user);
 
   if (!user || !bcrypt.compareSync(password, user.password))
     throw new AppError("Invalid credentials", 400);
@@ -24,7 +22,6 @@ export const signin = catchAsyncError(async (req, res) => {
 export const signup = catchAsyncError(async (req, res) => {
   const { name, email, password } = req.body;
   const email_token = jwt.sign({ email }, process.env.SECRET_EMAIl);
-  console.log(email_token);
   const link = process.env.LINK + `api/v1/auth/validate/${email_token}`;
   await transporter.sendMail({
     from: process.env.EMAIL,
