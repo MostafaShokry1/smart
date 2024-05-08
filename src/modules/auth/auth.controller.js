@@ -9,7 +9,7 @@ dotenv.config();
 export const signin = catchAsyncError(async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
-  if(!user.isEmailVerified)throw new AppError("please Verifiy Your Email first")
+  if(!user.isEmailVerified && !user)throw new AppError("please Verifiy Your Email first")
 
 
   if (!user || !bcrypt.compareSync(password, user.password))
