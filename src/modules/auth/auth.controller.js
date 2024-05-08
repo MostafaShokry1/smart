@@ -22,7 +22,7 @@ export const signin = catchAsyncError(async (req, res) => {
 
 export const signup = catchAsyncError(async (req, res) => {
   const { name, email, password } = req.body;
-  const email_token = jwt.sign({ email }, process.env.SECRET_EMAIl);
+  const email_token = jwt.sign({ email }, "hello");
   const link = process.env.LINK + `api/v1/auth/validate/${email_token}`;
   await transporter.sendMail({
     from: process.env.EMAIL,
