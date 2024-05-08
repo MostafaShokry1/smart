@@ -9,7 +9,7 @@ dotenv.config();
 export const signin = catchAsyncError(async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
-  if(!user.isEmailVerified && !user)throw new AppError("please Verifiy Your Email first")
+  if(!user.isEmailVerified || !user)throw new AppError("please Verifiy Your Email first")
 
 
   if (!user || !bcrypt.compareSync(password, user.password))
@@ -22,7 +22,7 @@ export const signin = catchAsyncError(async (req, res) => {
 
 export const signup = catchAsyncError(async (req, res) => {
   const { name, email, password } = req.body;
-  const email_token = jwt.sign({ email }, "hello");
+  const email_token = jwt.sign({ email }, process.env.SECRET_EMAIL);
   const link = process.env.LINK + `api/v1/auth/validate/${email_token}`;
   await transporter.sendMail({
     from: process.env.EMAIL,
@@ -44,7 +44,7 @@ export const signup = catchAsyncError(async (req, res) => {
 export const validateEmail = catchAsyncError(async (req, res) => {
   const { token } = req.params;
   try {
-    const { email } = jwt.verify(token, process.env.SECRET_EMAIl);
+    const { email } = jwt.verify(token, process.env.SECRET_EMAIL);
     await userModel.findOneAndUpdate({ email }, { isEmailVerified: true });
     res.send("Email verified sucess");
   } catch (error) {
@@ -54,7 +54,7 @@ export const validateEmail = catchAsyncError(async (req, res) => {
 export const checkIsEmailVerified = catchAsyncError(async (req, res) => {
   const { token } = req.params;
   try {
-    const { email } = jwt.verify(token, process.env.SECRET_EMAIl);
+    const { email } = jwt.verify(token, process.env.SECRET_EMAIL);
     const user =   await userModel.findOne({email})
     res.json({isVerifiy:user.isEmailVerified });
   } catch (error) {
