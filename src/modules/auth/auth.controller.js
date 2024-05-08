@@ -1,10 +1,11 @@
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { AppError, catchAsyncError } from "../../utils/error.handler.js";
 import userModel from "../user/models/user.model.js";
 import { transporter } from "../../utils/mailer.js";
 import generator from "generate-password";
-
+dotenv.config();
 export const signin = catchAsyncError(async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
