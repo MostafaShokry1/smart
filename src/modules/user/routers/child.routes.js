@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {  assertUniqueEmailchild, authenticate, authorize } from "../../auth/auth.middlewares.js";
+import {  assertParentExist, assertUniqueEmailchild, authenticate, authorize } from "../../auth/auth.middlewares.js";
 import { ROLES } from "../../../utils/enums.js";
 
 import { validate } from "../../../middlewares/validation.middleware.js";
@@ -26,6 +26,7 @@ router
     validate(addChildSchema),
     attachImage("cover_image"),
     assertUniqueEmailchild,
+    assertParentExist,
     addchild
   );
   router.route("/:id").put(
@@ -34,6 +35,7 @@ router
     upload.single("cover_image"),
     validate(updateChildSchema),
     attachImage("cover_image"),
+    assertParentExist,
     updateChild
   )
   .delete(authenticate, authorize(ROLES.ADMIN),validate(deleteChildSchema), deleteChild)

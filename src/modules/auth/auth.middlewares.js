@@ -40,3 +40,9 @@ export const assertUniqueEmailchild = catchAsyncError(async (req, res, next) => 
 	if (user) throw new AppError('This email is already taken', 400)
 	next()
 })
+export const assertParentExist = catchAsyncError(async (req, res, next) => {
+	const { parent_id } = req.body
+	const user = await userModel.findOne({ _id:parent_id })
+	if (!user) throw new AppError('Parent ID doesnt Exist ', 400)
+	next()
+})
