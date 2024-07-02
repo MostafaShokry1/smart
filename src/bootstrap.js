@@ -4,9 +4,7 @@ import { AppError } from "./utils/error.handler.js";
 import v1Router from "./routers/v1.routes.js";
 
 const bootstrap = (app) => {
-
   app.use(express.json());
-
   app.use(morgan("dev"));
 
   app.use("/api/v1", v1Router);
