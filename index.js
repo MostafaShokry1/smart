@@ -3,7 +3,6 @@ import express from "express";
 import dotenv from "dotenv";
 import bootstrap from "./src/bootstrap.js";
 import connectToDb from "./db/connection.js";
-import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -14,7 +13,6 @@ cloudinary.config({
 });
 
 const app = express();
-app.use(bodyParser.json());
 const port = +process.env.PORT;
 
 connectToDb();
