@@ -57,6 +57,14 @@ const childSchema = new mongoose.Schema(
 			ref: 'image',
 			required:true,
 		},
+		mac_adress:{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'BleDevice',
+		},
+		location:{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'GpsData',
+		},
 		grade:{
 			type: String,
 			trim: true,

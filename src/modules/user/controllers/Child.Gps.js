@@ -55,3 +55,15 @@ export const getlocation = catchAsyncError(async (req, res) => {
   if (!ChildLoc) throw new AppError("ChildLoc doesn't exist", 404);
   res.json({ ChildLoc });
 });
+export const deleteAllChildloc = catchAsyncError(async (req, res) => {
+  const result = await GpsData.deleteMany({})
+  if (!result || result.deletedCount === 0) {
+    throw new AppError("No ChildMac records found to delete", 404);
+  }
+  res.json({ message: `Deleted ${result.deletedCount} ChildMac records` });
+});
+export const addlocation = catchAsyncError(async (req, res) => {
+  const ChildLoc = await GpsData.create(req.body);
+  if (!ChildLoc) throw new AppError("ChildLoc doesn't exist", 404);
+  res.json({ ChildLoc });
+});

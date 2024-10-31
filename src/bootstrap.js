@@ -2,11 +2,15 @@ import express from "express";
 import morgan from "morgan";
 import { AppError } from "./utils/error.handler.js";
 import v1Router from "./routers/v1.routes.js";
-
+import cors from "cors";
 const bootstrap = (app) => {
   app.use(express.json());
   app.use(morgan("dev"));
-
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+    })
+  );
   app.use("/api/v1", v1Router);
 
   app.all("*", (req, res, next) => {

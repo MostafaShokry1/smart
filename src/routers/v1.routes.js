@@ -10,7 +10,7 @@ import {
   getChildMac,
 } from "../modules/user/controllers/Child.mac.controller.js";
 
-import { getlocation } from "../modules/user/controllers/Child.Gps.js";
+import { addlocation, getlocation } from "../modules/user/controllers/Child.Gps.js";
 
 const router = Router();
 
@@ -22,5 +22,5 @@ router
   .post(addchildMac)
   .get(getChildMac)
   .delete(deleteAllChildMac);
-router.route("/locdata").get(getlocation);
+router.route("/locdata").get(getlocation).post(addlocation)
 export default router;
